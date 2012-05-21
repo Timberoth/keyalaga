@@ -1,0 +1,12 @@
+.DS_Store
+keyalaga/Library
+keyalaga/Temp
+*.csproj
+*.unityproj
+*.sln
+*.pidb
+*.userprefs
+*.apk
+keyalaga/iOS_Staging/
+*~
+*.pbxuser
