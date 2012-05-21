@@ -1,14 +1,15 @@
 using UnityEngine;
 using System.Collections;
 
-public class GameManager : MonoBehaviour 
+public class Game : MonoBehaviour 
 {
-	private InputManager inputManager;
-	private UIManager uiManager;
+	public InputManager inputManager;
+	public UIManager uiManager;
+	public WordManager wordManager;
 	
 	
 	// Singleton Code
-	public static GameManager instance;
+	public static Game instance;
 	void Awake(){		
 		if(instance == null){
 			instance = this;
@@ -27,7 +28,13 @@ public class GameManager : MonoBehaviour
 		bubble.transform.position = new Vector3( 0f, 10f, 0f );
 		
 		this.inputManager = new InputManager();
+		this.inputManager.Initialize();
+		
 		this.uiManager = new UIManager();
+		this.uiManager.Initialize();
+		
+		this.wordManager = new WordManager();
+		this.wordManager.Initialize();
 	}
 	
 	// Update is called once per frame
@@ -35,5 +42,6 @@ public class GameManager : MonoBehaviour
 	{
 		this.inputManager.Update();
 		this.uiManager.Update();
+		this.wordManager.Update();
 	}
 }
