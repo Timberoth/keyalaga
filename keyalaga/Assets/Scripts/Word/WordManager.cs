@@ -12,18 +12,36 @@ public class WordManager
 	/// </summary>
 	List<string> words;
 	
-	
+	/// <summary>
+	/// List of all WordObjects that currently exist in the game
+	/// </summary>
+	List<WordObject> wordObjects;
 
 	// Use this for initialization
 	public void Initialize() 
 	{
-		words = new List<string>();
-		
+		this.words = new List<string>();
+		this.wordObjects = new List<WordObject>();
 	}
 	
-	// Update is called once per frame
-	public void Update() 
+	public void AddWordObject( WordObject wordObject )
 	{
+		this.wordObjects.Add( wordObject );	
+	}
 	
+	public void CheckForMatches( string inputBuffer ) 
+	{
+		string[] words = inputBuffer.Split(' ');
+		for( int i = 0; i < words.Length; i++ )
+		{
+			Debug.Log( words[i] );	
+		}
+		
+		// TODO Optimize this
+		// Go through entire wordObjects list and check for matches
+		foreach( WordObject wordObject in wordObjects )
+		{
+				
+		}
 	}
 }

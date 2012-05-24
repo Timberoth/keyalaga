@@ -41,7 +41,6 @@ public class Game : MonoBehaviour
 	void Update () 
 	{
 		this.inputManager.Update();
-		this.uiManager.Update();
-		this.wordManager.Update();
+		this.uiManager.Update();		
 	}
 }

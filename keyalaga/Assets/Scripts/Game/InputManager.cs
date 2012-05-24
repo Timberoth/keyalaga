@@ -43,6 +43,8 @@ public class InputManager
 		// Look for enter/return key to check for matches and empty the inputBuffer.
 		if( Input.GetKey(KeyCode.KeypadEnter) || Input.GetKey(KeyCode.Return) )
 		{
+			Game.instance.wordManager.CheckForMatches( this.inputBuffer );
+			
 			// TODO Search through the words for matches.
 			this.inputBuffer = "";
 		}
