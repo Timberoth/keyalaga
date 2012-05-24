@@ -30,18 +30,25 @@ public class WordManager
 	}
 	
 	public void CheckForMatches( string inputBuffer ) 
-	{
-		string[] words = inputBuffer.Split(' ');
-		for( int i = 0; i < words.Length; i++ )
-		{
-			Debug.Log( words[i] );	
-		}
-		
+	{		
 		// TODO Optimize this
 		// Go through entire wordObjects list and check for matches
 		foreach( WordObject wordObject in wordObjects )
 		{
-				
+			if( inputBuffer.Contains( wordObject.word ) )
+			{
+				wordObject.ReactToMatch();	
+			}
 		}
+	}
+	
+	private List<string> ConvertArrayToList( string[] array )
+	{
+		List<string> list = new List<string>();
+		for( int i = 0; i < array.Length; i++ )
+		{
+			list.Add( array[i] );	
+		}
+		return list;
 	}
 }

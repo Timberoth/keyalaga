@@ -23,10 +23,7 @@ public class Game : MonoBehaviour
 	
 	// Use this for initialization
 	void Start () 
-	{
-		GameObject bubble = GameObject.Instantiate(Resources.Load("Prefabs/Bubble")) as GameObject;
-		bubble.transform.position = new Vector3( 0f, 10f, 0f );
-		
+	{		
 		this.inputManager = new InputManager();
 		this.inputManager.Initialize();
 		
@@ -35,6 +32,13 @@ public class Game : MonoBehaviour
 		
 		this.wordManager = new WordManager();
 		this.wordManager.Initialize();
+		
+		GameObject bubble = GameObject.Instantiate(Resources.Load("Prefabs/Bubble")) as GameObject;
+		WordObject wordObject = (WordObject)bubble.GetComponent<WordObject>();
+		wordObject.word = "test";			
+		bubble.transform.position = new Vector3( 0f, 10f, 0f );
+		
+		this.wordManager.AddWordObject( wordObject );
 	}
 	
 	// Update is called once per frame

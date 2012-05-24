@@ -1,24 +1,28 @@
 using UnityEngine;
 using System.Collections;
 
-public class WordObject 
-{
-	public GameObject gameObject;
+[RequireComponent (typeof (Rigidbody))]
+public class WordObject : MonoBehaviour
+{	
 	public string word;
 	
-	// Use this for initialization
-	public WordObject( GameObject gameObject, string word ) 
-	{
-		this.gameObject = gameObject;
-		this.word = word;
+	public void Awake()
+	{		
 	}
 	
-	// This defines what this object does when it's word has been matched.
-	// This could be different per object.  Maybe it explodes into particles,
-	// maybe it rockets into the air, maybe an animation plays, etc.
-	public void ReactToMatch()
+	// Use this for initialization
+	public void Start () 
+	{		
+	}
+	
+	// Update is called once per frame
+	public void Update () 
 	{
-		// As a test just destroy this object.
-		GameObject.Destroy( this.gameObject );
+	}
+	
+	// Do something interesting when this object has been matched in game.
+	public void ReactToMatch()
+	{		
+		this.rigidbody.AddForce( this.transform.up * 8, ForceMode.Impulse );
 	}
 }
