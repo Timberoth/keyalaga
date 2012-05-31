@@ -6,7 +6,7 @@ public class Game : MonoBehaviour
 	public InputManager inputManager;
 	public UIManager uiManager;
 	public WordManager wordManager;
-	
+	public GameObject gameCamera;
 	
 	// Singleton Code
 	public static Game instance;
@@ -33,12 +33,11 @@ public class Game : MonoBehaviour
 		this.wordManager = new WordManager();
 		this.wordManager.Initialize();
 		
-		GameObject bubble = GameObject.Instantiate(Resources.Load("Prefabs/Bubble")) as GameObject;
-		WordObject wordObject = (WordObject)bubble.GetComponent<WordObject>();
-		wordObject.word = "a";			
-		bubble.transform.position = new Vector3( 0f, 10f, 0f );
-		
+		GameObject bubble = GameObject.Find("Bubble");	
+		WordObject wordObject = bubble.GetComponent<WordObject>();
 		this.wordManager.AddWordObject( wordObject );
+		
+		this.gameCamera = GameObject.Find("Main Camera");		
 	}
 	
 	// Update is called once per frame
