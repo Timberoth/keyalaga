@@ -6,7 +6,8 @@ public class Game : MonoBehaviour
 	public InputManager inputManager;
 	public UIManager uiManager;
 	public WordManager wordManager;
-	public GameObject gameCamera;
+	public CameraManager cameraManager;
+	
 	
 	// Singleton Code
 	public static Game instance;
@@ -33,17 +34,22 @@ public class Game : MonoBehaviour
 		this.wordManager = new WordManager();
 		this.wordManager.Initialize();
 		
-		GameObject bubble = GameObject.Find("Bubble");	
-		WordObject wordObject = bubble.GetComponent<WordObject>();
-		this.wordManager.AddWordObject( wordObject );
+		this.cameraManager = new CameraManager();
+		this.cameraManager.Initialize();
 		
-		this.gameCamera = GameObject.Find("Main Camera");		
+		GameObject ball = GameObject.Find("Ball");	
+		WordObject wordObject = ball.GetComponent<WordObject>();
+		this.wordManager.AddWordObject( wordObject );		
+		
+		// CameraManager needs tracking ref
+		this.cameraManager.AddTrackingObject( ball );
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
 		this.inputManager.Update();
-		this.uiManager.Update();		
+		this.uiManager.Update();
+		this.cameraManager.Update();
 	}
 }
