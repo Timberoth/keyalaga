@@ -7,6 +7,8 @@ public class WordObject : MonoBehaviour
 {	
 	public string word;
 	
+	private const float MAX_SPEED = 10f;
+	
 	private bool headingRight = true;
 	
 	public void Awake()
@@ -21,6 +23,13 @@ public class WordObject : MonoBehaviour
 	// Update is called once per frame
 	public void Update () 
 	{				
+		// Cap velocity to ensure the camera can track it
+		Vector3 newVelocity = this.rigidbody.velocity;
+		newVelocity.x = Math.Max( newVelocity.x, -MAX_SPEED );
+		newVelocity.x = Math.Min( newVelocity.x, MAX_SPEED );
+		newVelocity.y = Math.Max( newVelocity.y, -MAX_SPEED );
+		newVelocity.y = Math.Min( newVelocity.y, MAX_SPEED );
+		this.rigidbody.velocity = newVelocity;
 	}
 	
 	// Do something interesting when this object has been matched in game.

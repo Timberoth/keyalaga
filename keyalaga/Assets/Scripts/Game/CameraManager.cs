@@ -12,6 +12,8 @@ public class CameraManager
 	private GameObject trackingObject;
 	private Rigidbody trackingObjectRigidBody;
 		
+	private Vector3 destinationCameraPosition;
+		
 	private float cameraSpeed = 10.0f;
 	
 	// Adapted from Aubrey Hesselgren's function at 
@@ -31,7 +33,7 @@ public class CameraManager
 	    Vector3 finalPos = Current + stepSize;
 
 		// Check if we're close enough to the target to snap to it.
-		if( (finalPos - Target).magnitude <= 0.5 )
+		if( (finalPos - Target).magnitude <= 0.25 )
 			finalPos = Target;
 		
 	    return finalPos;
@@ -42,18 +44,19 @@ public class CameraManager
 	{
 		// Find the game's camera object
 		this.camera = GameObject.Find("Main Camera");		
+		this.destinationCameraPosition = this.camera.transform.position;
 	}
 	
 	public void Update() 
-	{						
-		
+	{										
+		Vector3 ballOffset = -Vector3.Normalize(this.trackingObjectRigidBody.velocity) * 1.75f;
+		this.destinationCameraPosition = this.trackingObjectRigidBody.position + ballOffset;						
+				
 		this.camera.transform.position = InterpolateStepOverTime( 
 			this.camera.transform.position, 
-			this.trackingObject.transform.position, 
+			this.destinationCameraPosition, 
 			Time.deltaTime, 
-			this.cameraSpeed );
-		
-		Debug.Log( this.trackingObjectRigidBody.velocity.y );
+			this.cameraSpeed );		
 	}
 	
 	public void AddTrackingObject( GameObject newObject )
