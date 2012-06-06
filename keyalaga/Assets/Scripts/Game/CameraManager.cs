@@ -49,19 +49,22 @@ public class CameraManager
 	
 	public void Update() 
 	{										
-		Vector3 ballOffset = -Vector3.Normalize(this.trackingObjectRigidBody.velocity) * 1.75f;
+		Vector3 ballOffset = -Vector3.Normalize(this.trackingObjectRigidBody.velocity) * 2f;
 		this.destinationCameraPosition = this.trackingObjectRigidBody.position + ballOffset;						
 				
+		/*
 		this.camera.transform.position = InterpolateStepOverTime( 
 			this.camera.transform.position, 
 			this.destinationCameraPosition, 
 			Time.deltaTime, 
 			this.cameraSpeed );		
+			*/
+		this.camera.transform.position = this.destinationCameraPosition;
 	}
 	
 	public void AddTrackingObject( GameObject newObject )
 	{			
-		DebugUtils.Assert( newObject != null );
+		GameUtils.Assert( newObject != null );
 		this.trackingObject = newObject;
 		
 		this.trackingObjectRigidBody = this.trackingObject.GetComponent<Rigidbody>();
