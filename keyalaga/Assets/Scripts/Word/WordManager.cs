@@ -70,14 +70,34 @@ public class WordManager
 	
 	public void CheckForMatches( string inputBuffer ) 
 	{		
+		// Not factoring in case sensitivity for now
+		inputBuffer = inputBuffer.ToLower();		
+		
 		// TODO Optimize this
 		// Go through entire wordObjects list and check for matches
+		string[] words = inputBuffer.Split(' ');
 		foreach( WordObject wordObject in wordObjects )
-		{
+		{		
 			if( inputBuffer.Contains( wordObject.word ) )
 			{
-				wordObject.ReactToMatch();	
+				// Double check that the word is an exact match				
+				for( int i = 0; i < words.Length; i++ )
+				{
+					if(	wordObject.word == words[i] )
+					{
+						wordObject.ReactToMatch( PickRandomWord(WordDifficulty.Easy) );
+						Debug.Log( wordObject.word );
+					}
+				}				
 			}
 		}
 	}	
+	
+	public string PickRandomWord( WordDifficulty difficulty )
+	{
+		// TODO Keep track of which words are already used to prevent duplicates
+		List<string> words = (List<string>)this.wordDatabase[difficulty];
+		int random = UnityEngine.Random.Range(0, words.Count-1);
+		return words[random];
+	}
 }

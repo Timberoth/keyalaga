@@ -36,9 +36,11 @@ public class WordObject : MonoBehaviour
 	}
 	
 	// Do something interesting when this object has been matched in game.
-	public void ReactToMatch()
+	public void ReactToMatch( string newWord )
 	{				
-		if( this.rigidbody.velocity.y < 0.0f )		
+		this.word = newWord;
+		
+		if( this.rigidbody.velocity.y < 0.0f )
 		{
 			this.rigidbody.velocity = Vector3.zero;			
 		}
@@ -55,9 +57,6 @@ public class WordObject : MonoBehaviour
 			force.x = UnityEngine.Random.Range(3,6);
 			this.headingRight = true;
 		}
-		this.rigidbody.AddForce( force, ForceMode.Impulse );	
-		
-		// TODO HACK - Show next word to type
-
+		this.rigidbody.AddForce( force, ForceMode.Impulse );
 	}
 }
