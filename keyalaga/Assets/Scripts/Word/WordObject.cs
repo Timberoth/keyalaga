@@ -18,12 +18,15 @@ public class WordObject : MonoBehaviour
 	
 	// Use this for initialization
 	public void Start () 
-	{			
+	{					
 	}
 	
 	// Update is called once per frame
 	public void Update () 
 	{				
+		// Update height text
+		Game.instance.uiManager.heightLabel.text = Mathf.RoundToInt(this.rigidbody.position.y-1) + " M";
+		
 		// Cap velocity to ensure the camera can track it
 		/*
 		Vector3 newVelocity = this.rigidbody.velocity;
@@ -39,6 +42,8 @@ public class WordObject : MonoBehaviour
 	public void ReactToMatch( string newWord )
 	{				
 		this.word = newWord;
+		
+		Game.instance.uiManager.currentWordLabel.text = this.word;
 		
 		if( this.rigidbody.velocity.y < 0.0f )
 		{

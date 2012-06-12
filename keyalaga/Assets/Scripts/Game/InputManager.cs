@@ -30,7 +30,7 @@ public class InputManager
 			else if( this.inputBuffer.Length == 1 )
 				this.inputBuffer = "";
 			
-			Debug.Log( this.inputBuffer );
+			Game.instance.uiManager.userInputLabel.text = this.inputBuffer;
 			
 			// Don't do any more processing this frame.
 			return;
@@ -52,6 +52,6 @@ public class InputManager
 			this.inputBuffer = "";
 		}
 		
-		Debug.Log( this.inputBuffer );
+		Game.instance.uiManager.userInputLabel.text = this.inputBuffer;
 	}
 }

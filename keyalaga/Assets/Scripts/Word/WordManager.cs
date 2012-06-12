@@ -86,7 +86,6 @@ public class WordManager
 					if(	wordObject.word == words[i] )
 					{
 						wordObject.ReactToMatch( PickRandomWord(WordDifficulty.Easy) );
-						Debug.Log( wordObject.word );
 					}
 				}				
 			}

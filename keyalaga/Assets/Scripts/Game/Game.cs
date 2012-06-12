@@ -6,8 +6,7 @@ public class Game : MonoBehaviour
 	public InputManager inputManager;
 	public UIManager uiManager;
 	public WordManager wordManager;
-	public CameraManager cameraManager;
-	
+	public CameraManager cameraManager;		
 	
 	// Singleton Code
 	public static Game instance;
@@ -39,7 +38,11 @@ public class Game : MonoBehaviour
 		
 		GameObject ball = GameObject.Find("Ball");	
 		WordObject wordObject = ball.GetComponent<WordObject>();
-		this.wordManager.AddWordObject( wordObject );		
+		this.wordManager.AddWordObject( wordObject );
+		
+		// Update the current word text for the 1st frame
+		this.uiManager.currentWordLabel.text = wordObject.word;
+		this.uiManager.userInputLabel.text = "";
 		
 		// CameraManager needs tracking ref
 		this.cameraManager.AddTrackingObject( ball );
