@@ -49,7 +49,9 @@ public class WordManager
 		Dictionary<string,object> wordSet = (Dictionary<string,object>) wordDictionary[setName];
 		
 		// Parse by difficulty			
-		this.wordDatabase.Add( WordDifficulty.Easy, ParseWords( wordSet, "easy" ) );		
+		this.wordDatabase.Add( WordDifficulty.Easy, ParseWords( wordSet, "easy" ) );
+		this.wordDatabase.Add( WordDifficulty.Medium, ParseWords( wordSet, "medium" ) );		
+		this.wordDatabase.Add( WordDifficulty.Hard, ParseWords( wordSet, "hard" ) );		
 	}
 	
 	private List<string> ParseWords( Dictionary<string,object> dictionary, string name )
@@ -85,7 +87,15 @@ public class WordManager
 				{
 					if(	wordObject.word == words[i] )
 					{
-						wordObject.ReactToMatch( PickRandomWord(WordDifficulty.Easy) );
+						// Check the height to determine the difficulty of the next word
+						float height = wordObject.rigidbody.position.y;
+						WordDifficulty difficulty = WordDifficulty.Easy;
+						if( height > 500f )
+							difficulty = WordDifficulty.Hard;
+						else if( height > 250f )
+							difficulty = WordDifficulty.Medium;
+						
+						wordObject.ReactToMatch(PickRandomWord(difficulty));
 					}
 				}				
 			}
