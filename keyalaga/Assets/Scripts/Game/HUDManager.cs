@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class UIManager 
+public class HUDManager 
 {
 	public UILabel heightLabel;
 	public UILabel currentWordLabel;

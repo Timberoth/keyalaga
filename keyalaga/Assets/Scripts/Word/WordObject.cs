@@ -25,7 +25,7 @@ public class WordObject : MonoBehaviour
 	public void Update () 
 	{				
 		// Update height text
-		Game.instance.uiManager.heightLabel.text = Mathf.RoundToInt(this.rigidbody.position.y-1) + " M";
+		Game.instance.hudManager.heightLabel.text = Mathf.RoundToInt(this.rigidbody.position.y-1) + " M";
 		
 		// Cap velocity to ensure the camera can track it
 		/*
@@ -43,23 +43,23 @@ public class WordObject : MonoBehaviour
 	{				
 		this.word = newWord;
 		
-		Game.instance.uiManager.currentWordLabel.text = this.word;
+		Game.instance.hudManager.currentWordLabel.text = this.word;
 		
 		if( this.rigidbody.velocity.y < 0.0f )
 		{
 			this.rigidbody.velocity = Vector3.zero;			
 		}
 				
-		Vector3 force = this.transform.up * MAX_IMPLUSE;
+		Vector3 force = Vector3.up * MAX_IMPLUSE;
 		
 		if( this.headingRight )
 		{
-			force.x = UnityEngine.Random.Range(-6,-3);
+			force.x = UnityEngine.Random.Range(-8,-4);
 			this.headingRight = false;
 		}
 		else
 		{
-			force.x = UnityEngine.Random.Range(3,6);
+			force.x = UnityEngine.Random.Range(4,8);
 			this.headingRight = true;
 		}
 		this.rigidbody.AddForce( force, ForceMode.Impulse );

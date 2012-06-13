@@ -12,7 +12,9 @@ public class WordManager
 	{
 		Easy = 0,
 		Medium,
-		Hard,		
+		Hard,
+		VeryHard,
+		SuperHard,
 	}
 	
 	/// <summary>
@@ -51,7 +53,9 @@ public class WordManager
 		// Parse by difficulty			
 		this.wordDatabase.Add( WordDifficulty.Easy, ParseWords( wordSet, "easy" ) );
 		this.wordDatabase.Add( WordDifficulty.Medium, ParseWords( wordSet, "medium" ) );		
-		this.wordDatabase.Add( WordDifficulty.Hard, ParseWords( wordSet, "hard" ) );		
+		this.wordDatabase.Add( WordDifficulty.Hard, ParseWords( wordSet, "hard" ) );
+		this.wordDatabase.Add( WordDifficulty.VeryHard, ParseWords( wordSet, "very_hard" ) );
+		this.wordDatabase.Add( WordDifficulty.SuperHard, ParseWords( wordSet, "super_hard" ) );
 	}
 	
 	private List<string> ParseWords( Dictionary<string,object> dictionary, string name )
@@ -74,39 +78,83 @@ public class WordManager
 	{		
 		// Not factoring in case sensitivity for now
 		inputBuffer = inputBuffer.ToLower();		
-		
-		// TODO Optimize this
+				
 		// Go through entire wordObjects list and check for matches
 		string[] words = inputBuffer.Split(' ');
 		foreach( WordObject wordObject in wordObjects )
 		{		
+			// 1st pass check if the buffer contains the word or phrase
 			if( inputBuffer.Contains( wordObject.word ) )
 			{
-				// Double check that the word is an exact match				
-				for( int i = 0; i < words.Length; i++ )
+				// 2nd pass check for exact match
+				
+				// We're looking for a single word match
+				if( !wordObject.word.Contains(" ") )
 				{
-					if(	wordObject.word == words[i] )
+					// Double check that the word is an exact match				
+					for( int i = 0; i < words.Length; i++ )
 					{
-						// Check the height to determine the difficulty of the next word
-						float height = wordObject.rigidbody.position.y;
-						WordDifficulty difficulty = WordDifficulty.Easy;
-						if( height > 500f )
-							difficulty = WordDifficulty.Hard;
-						else if( height > 250f )
-							difficulty = WordDifficulty.Medium;
-						
-						wordObject.ReactToMatch(PickRandomWord(difficulty));
+						if(	wordObject.word == words[i] )		
+						{
+							wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
+							return;
+						}
+					}			
+				}
+				
+				// We're looking for a phrase match
+				else
+				{					
+					// Double check that the phrase is an exact match
+					int startIndex = inputBuffer.IndexOf( wordObject.word );					
+					int endIndex = startIndex + wordObject.word.Length - 1;					
+					char charBeforePhrase = ' ';
+					char charAfterPhrase = ' ';
+					if( startIndex > 0 )
+						charBeforePhrase = inputBuffer[startIndex-1];
+					if( endIndex < inputBuffer.Length - 1 )
+						charAfterPhrase = inputBuffer[endIndex+1];
+				
+					// There a bunch of cases to check for a match
+					if( inputBuffer.Length == wordObject.word.Length )
+					{
+						wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
+						return;
+					}
+					
+					else if( charBeforePhrase == ' ' && charAfterPhrase == ' ' )
+					{
+						wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
+						return;
 					}
 				}				
 			}
 		}
 	}	
 	
+	private WordDifficulty DetermineDifficulty( WordObject wordObject )
+	{
+		// Check the height to determine the difficulty of the next word
+		float height = wordObject.rigidbody.position.y;
+		WordDifficulty difficulty = WordDifficulty.Easy;
+		
+		if( height > 400f )
+			difficulty = WordDifficulty.SuperHard;
+		else if( height > 300f )
+			difficulty = WordDifficulty.VeryHard;
+		else if( height > 200f )
+			difficulty = WordDifficulty.Hard;
+		else if( height > 100f )
+			difficulty = WordDifficulty.Medium;
+		
+		return difficulty;		
+	}
+	
 	public string PickRandomWord( WordDifficulty difficulty )
 	{
 		// TODO Keep track of which words are already used to prevent duplicates
 		List<string> words = (List<string>)this.wordDatabase[difficulty];
-		int random = UnityEngine.Random.Range(0, words.Count-1);
+		int random = UnityEngine.Random.Range(0, words.Count);
 		return words[random];
 	}
 }

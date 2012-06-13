@@ -346,5 +346,33 @@
 			"ENACTOR",
 			],
 		},
+		
+		"very_hard":
+		{
+			"words":
+			[
+			"not so easy",
+			"getting harder",
+			"ha ha ha",
+			"thank you",
+			"very hard mode",
+			"cats are cool",
+			"super cat",			
+			],
+		},
+		
+		"super_hard":
+		{
+			"words":
+			[
+			"and you thought it couldn't get harder",
+			"now you've got punctuation thrown into the mix",
+			"you're fingers must be sore now",
+			"so where's everyone from?",
+			"wow tough crowd, not even a single laugh",
+			"who knew cats could fly so high",
+			"you should be getting into space soon",
+			],
+		}		
 	}
 }

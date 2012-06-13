@@ -4,9 +4,11 @@ using System.Collections;
 public class Game : MonoBehaviour 
 {
 	public InputManager inputManager;
-	public UIManager uiManager;
+	public HUDManager hudManager;
 	public WordManager wordManager;
-	public CameraManager cameraManager;		
+	public CameraManager cameraManager;
+	
+	public int lives = 3;
 	
 	// Singleton Code
 	public static Game instance;
@@ -27,8 +29,8 @@ public class Game : MonoBehaviour
 		this.inputManager = new InputManager();
 		this.inputManager.Initialize();
 		
-		this.uiManager = new UIManager();
-		this.uiManager.Initialize();
+		this.hudManager = new HUDManager();
+		this.hudManager.Initialize();
 		
 		this.wordManager = new WordManager();
 		this.wordManager.Initialize();
@@ -41,8 +43,8 @@ public class Game : MonoBehaviour
 		this.wordManager.AddWordObject( wordObject );
 		
 		// Update the current word text for the 1st frame
-		this.uiManager.currentWordLabel.text = wordObject.word;
-		this.uiManager.userInputLabel.text = "";
+		this.hudManager.currentWordLabel.text = wordObject.word;
+		this.hudManager.userInputLabel.text = "";
 		
 		// CameraManager needs tracking ref
 		this.cameraManager.AddTrackingObject( ball );
@@ -52,7 +54,7 @@ public class Game : MonoBehaviour
 	void Update () 
 	{
 		this.inputManager.Update();
-		this.uiManager.Update();
+		this.hudManager.Update();
 		this.cameraManager.Update();
 	}
 }
