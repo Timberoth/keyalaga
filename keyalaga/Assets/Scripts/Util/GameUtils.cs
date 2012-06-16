@@ -17,8 +17,9 @@ public class GameUtils
 	
 	public static string GetStreamingAssetsPath()
 	{
-	
-#if UNITY_IPHONE
+#if UNITY_EDITOR
+		return Application.dataPath + "/StreamingAssets";
+#elif UNITY_IPHONE
 		return Application.dataPath + "/Raw";
 #elif UNITY_ANDROID
 		return "jar:file://" + Application.dataPath + "!/assets/";
