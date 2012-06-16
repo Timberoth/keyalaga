@@ -5,14 +5,23 @@ public class InputManager
 {
 	string inputBuffer;
 	
+	TouchScreenKeyboard keyboard;
+	
 	// Use this for initialization
 	public void Initialize () 
-	{
-		
+	{		
+#if UNITY_IPHONE || UNITY_ANDROID
+		// Open the on screen keyboard
+		TouchScreenKeyboard.hideInput = true;
+		TouchScreenKeyboard.autorotateToLandscapeLeft = true;
+		TouchScreenKeyboard.autorotateToLandscapeRight = true;
+		this.keyboard = TouchScreenKeyboard.Open("", TouchScreenKeyboardType.Default, false, false, false, true);		
+#endif
 	}
 	
 	public void Update () 
 	{
+#if UNITY_EDITOR
 		if( Input.inputString.Length <= 0 )
 			return;
 		
@@ -53,5 +62,23 @@ public class InputManager
 		}
 		
 		Game.instance.hudManager.userInputLabel.text = this.inputBuffer;
+		
+#elif UNITY_IPHONE || UNITY_ANDROID
+		
+		// The return key was pressed
+		if( this.keyboard.done )
+		{			
+			// Keep the keyboard up the entire time
+			this.keyboard.active = true;
+			
+			// Search through the words for matches.
+			Game.instance.wordManager.CheckForMatches( this.keyboard.text );
+			
+			// Clear the text
+			this.keyboard.text = "";
+		}
+		
+		Game.instance.hudManager.userInputLabel.text = this.keyboard.text;
+#endif
 	}
 }

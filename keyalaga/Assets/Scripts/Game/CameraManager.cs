@@ -13,6 +13,10 @@ public class CameraManager
 	private Rigidbody trackingObjectRigidBody;
 		
 	private Vector3 destinationCameraPosition;
+	
+	// Since the OSK takes up so much of the screen, the camera has to be offset
+	// to keep the ball onscreen.
+	private Vector3 ORIGINAL_CAMEREA_OFFSET = new Vector3(0f, -2f, 0f);
 		
 	private float cameraSpeed = 10.0f;
 	
@@ -43,14 +47,17 @@ public class CameraManager
 	public void Initialize() 
 	{
 		// Find the game's camera object
-		this.camera = GameObject.Find("Main Camera");		
+		this.camera = GameObject.Find("Main Camera");
+		
+		this.camera.transform.position += this.ORIGINAL_CAMEREA_OFFSET;
+		
 		this.destinationCameraPosition = this.camera.transform.position;
 	}
 	
 	public void Update() 
 	{										
-		Vector3 ballOffset = -Vector3.Normalize(this.trackingObjectRigidBody.velocity) * 2f;
-		this.destinationCameraPosition = this.trackingObjectRigidBody.position + ballOffset;						
+		Vector3 ballOffset = -Vector3.Normalize(this.trackingObjectRigidBody.velocity) * 1.5f;
+		this.destinationCameraPosition = this.trackingObjectRigidBody.position + ballOffset + this.ORIGINAL_CAMEREA_OFFSET;						
 				
 		/*
 		this.camera.transform.position = InterpolateStepOverTime( 

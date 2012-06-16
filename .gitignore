@@ -7,6 +7,8 @@ keyalaga/Temp
 *.pidb
 *.userprefs
 *.apk
-keyalaga/iOS_Staging/
+keyalaga/iOS_Staging/Data
+keyalaga/iOS_Staging/Libraries
+keyalaga/iOS_Staging/build
 *~
 *.pbxuser
