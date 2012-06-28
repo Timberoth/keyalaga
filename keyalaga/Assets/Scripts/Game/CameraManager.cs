@@ -57,7 +57,10 @@ public class CameraManager
 	public void Update() 
 	{										
 		Vector3 ballOffset = -Vector3.Normalize(this.trackingObjectRigidBody.velocity) * 1.5f;
-		this.destinationCameraPosition = this.trackingObjectRigidBody.position + ballOffset + this.ORIGINAL_CAMEREA_OFFSET;						
+		this.destinationCameraPosition = this.trackingObjectRigidBody.position + ballOffset + this.ORIGINAL_CAMEREA_OFFSET;
+		
+		// Ensure the camera z never changes or we'll get sorting problems
+		this.destinationCameraPosition.z = -10f;
 				
 		/*
 		this.camera.transform.position = InterpolateStepOverTime( 
