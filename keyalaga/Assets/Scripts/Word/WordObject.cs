@@ -17,6 +17,7 @@ public class WordObject : MonoBehaviour
 	private bool headingRight = true;
 	
 	private exSprite sprite;
+	private exSpriteAnimation spriteAnimation;
 	
 	public void Awake()
 	{		
@@ -27,6 +28,7 @@ public class WordObject : MonoBehaviour
 	{		
 		this.rigidbody.SetMaxAngularVelocity(14f);
 		this.sprite = this.GetComponent<exSprite>();
+		this.spriteAnimation = this.GetComponent<exSpriteAnimation>();
 	}
 	
 	// Update is called once per frame
@@ -64,17 +66,21 @@ public class WordObject : MonoBehaviour
 		
 		Game.instance.hudManager.currentWordLabel.text = this.word;
 		
+		// Zero out y velocity if we're falling.
 		if( this.rigidbody.velocity.y < 0.0f )
 		{
 			this.rigidbody.velocity = Vector3.zero;			
 		}
+		
+		// Zero out the x velocity so the impluse doesn't cancel itself out
+		this.rigidbody.velocity = new Vector3(0f, this.rigidbody.velocity.y, 0f);
 				
 		Vector3 force = Vector3.up * MAX_IMPLUSE;
 		
 		// Heading Right, want to blast left
 		if( this.headingRight )
 		{
-			force.x = UnityEngine.Random.Range(-8,-4);
+			force.x = UnityEngine.Random.Range(-10,-6);
 			this.headingRight = false;
 			
 			// Give it a little spin
@@ -88,7 +94,7 @@ public class WordObject : MonoBehaviour
 		// Heading Left, want to blast right
 		else
 		{
-			force.x = UnityEngine.Random.Range(4,8);
+			force.x = UnityEngine.Random.Range(6,10);
 			this.headingRight = true;
 			
 			// Give it a little spin
@@ -98,8 +104,14 @@ public class WordObject : MonoBehaviour
 			// When heading right scale should be negative
 			this.sprite.scale = new Vector2(-Mathf.Abs(this.sprite.scale.x), this.sprite.scale.y);
 		}
+				
 		this.rigidbody.AddForce( force, ForceMode.Impulse );
 		
+		// Play sound FX
+		
+		// Play particle
+		
+		// Play animation
 		
 	}
 }
