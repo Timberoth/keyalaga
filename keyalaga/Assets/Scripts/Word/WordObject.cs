@@ -16,6 +16,8 @@ public class WordObject : MonoBehaviour
 	
 	private bool headingRight = true;
 	
+	private exSprite sprite;
+	
 	public void Awake()
 	{		
 	}
@@ -24,6 +26,7 @@ public class WordObject : MonoBehaviour
 	public void Start () 
 	{		
 		this.rigidbody.SetMaxAngularVelocity(14f);
+		this.sprite = this.GetComponent<exSprite>();
 	}
 	
 	// Update is called once per frame
@@ -68,7 +71,7 @@ public class WordObject : MonoBehaviour
 				
 		Vector3 force = Vector3.up * MAX_IMPLUSE;
 		
-		// Heading Right
+		// Heading Right, want to blast left
 		if( this.headingRight )
 		{
 			force.x = UnityEngine.Random.Range(-8,-4);
@@ -77,9 +80,12 @@ public class WordObject : MonoBehaviour
 			// Give it a little spin
 			this.rigidbody.angularVelocity = Vector3.zero;
 			this.rigidbody.AddTorque(Vector3.back * -ROTATION_SPEED);
+			
+			// When heading left scale should be positive
+			this.sprite.scale = new Vector2(Mathf.Abs(this.sprite.scale.x), this.sprite.scale.y);
 		}
 		
-		// Heading Left
+		// Heading Left, want to blast right
 		else
 		{
 			force.x = UnityEngine.Random.Range(4,8);
@@ -87,7 +93,10 @@ public class WordObject : MonoBehaviour
 			
 			// Give it a little spin
 			this.rigidbody.angularVelocity = Vector3.zero;
-			this.rigidbody.AddTorque(Vector3.back * ROTATION_SPEED);			
+			this.rigidbody.AddTorque(Vector3.back * ROTATION_SPEED);
+						
+			// When heading right scale should be negative
+			this.sprite.scale = new Vector2(-Mathf.Abs(this.sprite.scale.x), this.sprite.scale.y);
 		}
 		this.rigidbody.AddForce( force, ForceMode.Impulse );
 		
