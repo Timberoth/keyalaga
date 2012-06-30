@@ -38,8 +38,9 @@ public class Game : MonoBehaviour
 		this.cameraManager = new CameraManager();
 		this.cameraManager.Initialize();
 		
-		GameObject ball = GameObject.Find("Ball");	
-		WordObject wordObject = ball.GetComponent<WordObject>();
+		
+		GameObject character = GameObject.FindGameObjectWithTag("Character");
+		WordObject wordObject = character.GetComponent<WordObject>();
 		this.wordManager.AddWordObject( wordObject );
 		
 		// Update the current word text for the 1st frame
@@ -47,7 +48,7 @@ public class Game : MonoBehaviour
 		this.hudManager.userInputLabel.text = "";
 		
 		// CameraManager needs tracking ref
-		this.cameraManager.AddTrackingObject( ball );
+		this.cameraManager.AddTrackingObject( character );
 	}
 	
 	// Update is called once per frame

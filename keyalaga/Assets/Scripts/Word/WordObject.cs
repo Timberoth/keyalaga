@@ -15,6 +15,7 @@ public class WordObject : MonoBehaviour
 	private float updateTimer = 0.1f;
 	
 	private bool headingRight = true;
+	private bool jumping = false;
 	
 	private exSprite sprite;
 	private exSpriteAnimation spriteAnimation;
@@ -57,6 +58,27 @@ public class WordObject : MonoBehaviour
 			this.rigidbody.angularVelocity *= 1.1f;
 			this.timer = 0f;
 		}
+		
+		// Check if we've peaked and should go into a roll
+		if( this.jumping )
+		{
+			// Check if we've peaked
+			if( this.rigidbody.velocity.y < 0 )
+			{
+				Debug.Log("Going into roll");
+				this.jumping = false;
+				this.spriteAnimation.Play("Cat_Roll");
+				
+				if( this.headingRight )
+				{
+					this.rigidbody.AddTorque(Vector3.forward * -ROTATION_SPEED);	
+				}
+				else
+				{
+					this.rigidbody.AddTorque(Vector3.forward * ROTATION_SPEED);	
+				}
+			}
+		}
 	}
 	
 	// Do something interesting when this object has been matched in game.
@@ -66,6 +88,11 @@ public class WordObject : MonoBehaviour
 		
 		Game.instance.hudManager.currentWordLabel.text = this.word;
 		
+		Jump();
+	}
+	
+	private void Jump()
+	{
 		// Zero out y velocity if we're falling.
 		if( this.rigidbody.velocity.y < 0.0f )
 		{
@@ -83,9 +110,8 @@ public class WordObject : MonoBehaviour
 			force.x = UnityEngine.Random.Range(-10,-6);
 			this.headingRight = false;
 			
-			// Give it a little spin
+			// Kill rotation
 			this.rigidbody.angularVelocity = Vector3.zero;
-			this.rigidbody.AddTorque(Vector3.back * -ROTATION_SPEED);
 			
 			// When heading left scale should be positive
 			this.sprite.scale = new Vector2(Mathf.Abs(this.sprite.scale.x), this.sprite.scale.y);
@@ -97,9 +123,8 @@ public class WordObject : MonoBehaviour
 			force.x = UnityEngine.Random.Range(6,10);
 			this.headingRight = true;
 			
-			// Give it a little spin
+			// Kill rotation
 			this.rigidbody.angularVelocity = Vector3.zero;
-			this.rigidbody.AddTorque(Vector3.back * ROTATION_SPEED);
 						
 			// When heading right scale should be negative
 			this.sprite.scale = new Vector2(-Mathf.Abs(this.sprite.scale.x), this.sprite.scale.y);
@@ -107,11 +132,16 @@ public class WordObject : MonoBehaviour
 				
 		this.rigidbody.AddForce( force, ForceMode.Impulse );
 		
+		// Go back to base rotation so cat looks like it's jumping upward
+		this.rigidbody.transform.eulerAngles = Vector3.zero;
+		
 		// Play sound FX
 		
 		// Play particle
 		
-		// Play animation
+		// Play animation		
+		this.spriteAnimation.Play("Cat_Jump");		
 		
+		this.jumping = true;		
 	}
 }
