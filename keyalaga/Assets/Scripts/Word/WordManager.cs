@@ -138,9 +138,9 @@ public class WordManager
 		float height = wordObject.rigidbody.position.y;
 		WordDifficulty difficulty = WordDifficulty.Easy;
 		
-		if( height > 400f )
+		if( height > 800f )
 			difficulty = WordDifficulty.SuperHard;
-		else if( height > 300f )
+		else if( height > 500f )
 			difficulty = WordDifficulty.VeryHard;
 		else if( height > 200f )
 			difficulty = WordDifficulty.Hard;

@@ -20,6 +20,8 @@ public class WordObject : MonoBehaviour
 	private exSprite sprite;
 	private exSpriteAnimation spriteAnimation;
 	
+	private int maxHeight = 0;
+	
 	public void Awake()
 	{		
 	}
@@ -35,8 +37,29 @@ public class WordObject : MonoBehaviour
 	// Update is called once per frame
 	public void Update () 
 	{				
+		float height = this.rigidbody.position.y-1f;
+		int roundedHeight = Mathf.RoundToInt(height);
+		
 		// Update height text
-		Game.instance.hudManager.heightLabel.text = Mathf.RoundToInt(this.rigidbody.position.y-1) + " M";
+		Game.instance.hudManager.heightLabel.text = roundedHeight + "M";
+		
+		// Update max height text
+		if( height > this.maxHeight )
+		{
+			this.maxHeight = roundedHeight;			
+			Game.instance.hudManager.maxHeightLabel.text = "Max Height: "+this.maxHeight.ToString()+"M";
+		}
+		
+		// Check for end game conditions
+		if( roundedHeight <= -1 )
+		{
+			Debug.Log("END GAME");
+			
+			// TODO Pop up score screen, give players chance to retry
+			
+			// TEMP HACK - reload screen
+			Application.LoadLevel("Sandbox");
+		}
 		
 		// Cap velocity to ensure the camera can track it
 		/*
