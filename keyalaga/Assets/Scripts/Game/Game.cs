@@ -25,7 +25,7 @@ public class Game : MonoBehaviour
 	
 	
 	// Use this for initialization
-	void Start () 
+	private void Start () 
 	{		
 		this.inputManager = new InputManager();
 		this.inputManager.Initialize();
@@ -56,11 +56,16 @@ public class Game : MonoBehaviour
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	private void Update () 
 	{
 		this.inputManager.Update();
 		this.hudManager.Update();
 		this.cameraManager.Update();
 		this.audioManager.Update();
 	}
+	
+	public void SetGravity( Vector3 newGravity )
+	{
+		Physics.gravity = newGravity;	
+	}	
 }

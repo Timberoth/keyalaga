@@ -53,6 +53,7 @@ public class WordObject : MonoBehaviour
 	{		
 		this.timer += Time.fixedDeltaTime;
 		
+		// We only want to increase the spin speed after a certain bit of time
 		if( this.timer > this.updateTimer )
 		{
 			this.rigidbody.angularVelocity *= 1.1f;
@@ -76,7 +77,19 @@ public class WordObject : MonoBehaviour
 				{
 					this.rigidbody.AddTorque(Vector3.forward * ROTATION_SPEED);	
 				}
+				
+				// Slow gravity depending on the difficulty
+				Game.instance.SetGravity( new Vector3(0f, -4.9f, 0f) );			
 			}
+		}
+		
+		// Falling
+		else
+		{
+			// Cap our falling velocity Y		
+			Vector3 newVelocity = this.rigidbody.velocity;
+			newVelocity.y = Mathf.Max( this.rigidbody.velocity.y, -15f );		
+			this.rigidbody.velocity = newVelocity;			
 		}
 	}
 	
@@ -142,6 +155,8 @@ public class WordObject : MonoBehaviour
 		// Play animation		
 		this.spriteAnimation.Play("Cat_Jump");		
 		
-		this.jumping = true;		
+		this.jumping = true;
+		
+		Game.instance.SetGravity( new Vector3(0f, -9.81f, 0f) );
 	}
 }

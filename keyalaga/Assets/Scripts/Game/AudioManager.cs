@@ -33,8 +33,12 @@ public class AudioManager
 		RegisterSoundEffect("super_jump", "Audio/SoundEffects/super_jump");
 		
 		RegisterMusicTrack("ChronoTrigger", "Audio/Music/ChronoTrigger");
-		
+
+#if UNITY_EDITOR
+		// Don't play music
+#else
 		PlayMusicTrack("ChronoTrigger");
+#endif
 	}
 		
 	public void Update () 
