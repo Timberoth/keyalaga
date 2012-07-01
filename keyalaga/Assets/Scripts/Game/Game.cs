@@ -7,6 +7,7 @@ public class Game : MonoBehaviour
 	public HUDManager hudManager;
 	public WordManager wordManager;
 	public CameraManager cameraManager;
+	public AudioManager audioManager;
 	
 	public int lives = 3;
 	
@@ -38,6 +39,9 @@ public class Game : MonoBehaviour
 		this.cameraManager = new CameraManager();
 		this.cameraManager.Initialize();
 		
+		this.audioManager = new AudioManager();
+		this.audioManager.Initialize();
+		
 		
 		GameObject character = GameObject.FindGameObjectWithTag("Character");
 		WordObject wordObject = character.GetComponent<WordObject>();
@@ -57,5 +61,6 @@ public class Game : MonoBehaviour
 		this.inputManager.Update();
 		this.hudManager.Update();
 		this.cameraManager.Update();
+		this.audioManager.Update();
 	}
 }

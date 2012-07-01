@@ -9,7 +9,7 @@ public class WordObject : MonoBehaviour
 	
 	private const float MAX_SPEED = 10f;
 	private const float MAX_IMPLUSE = 20f;
-	private const float ROTATION_SPEED = 10f;
+	private const float ROTATION_SPEED = 20f;
 	
 	private float timer = 0f;
 	private float updateTimer = 0.1f;
@@ -64,8 +64,7 @@ public class WordObject : MonoBehaviour
 		{
 			// Check if we've peaked
 			if( this.rigidbody.velocity.y < 0 )
-			{
-				Debug.Log("Going into roll");
+			{				
 				this.jumping = false;
 				this.spriteAnimation.Play("Cat_Roll");
 				
@@ -136,6 +135,7 @@ public class WordObject : MonoBehaviour
 		this.rigidbody.transform.eulerAngles = Vector3.zero;
 		
 		// Play sound FX
+		Game.instance.audioManager.PlaySoundEffect("super_jump");
 		
 		// Play particle
 		

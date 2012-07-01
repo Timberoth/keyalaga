@@ -18,7 +18,7 @@ public class CameraManager
 	// to keep the ball onscreen.
 	private Vector3 ORIGINAL_CAMEREA_OFFSET = new Vector3(0f, -2f, 0f);
 		
-	private float cameraSpeed = 10.0f;
+	//private float cameraSpeed = 10.0f;
 	
 	// Adapted from Aubrey Hesselgren's function at 
 	// http://answers.unity3d.com/questions/17076/how-to-lerp-between-to-vector3-positions-c.html
@@ -74,7 +74,7 @@ public class CameraManager
 	
 	public void AddTrackingObject( GameObject newObject )
 	{			
-		GameUtils.Assert( newObject != null );
+		GameUtils.Assert( newObject != null, "Trying to add null TrackingObject" );
 		this.trackingObject = newObject;
 		
 		this.trackingObjectRigidBody = this.trackingObject.GetComponent<Rigidbody>();
