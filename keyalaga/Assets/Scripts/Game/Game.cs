@@ -8,6 +8,7 @@ public class Game : MonoBehaviour
 	public WordManager wordManager;
 	public CameraManager cameraManager;
 	public AudioManager audioManager;
+	public BackgroundManager backgroundManager;
 	
 	public int lives = 3;
 	
@@ -42,6 +43,8 @@ public class Game : MonoBehaviour
 		this.audioManager = new AudioManager();
 		this.audioManager.Initialize();
 		
+		this.backgroundManager = new BackgroundManager();
+		this.backgroundManager.Initialize();
 		
 		GameObject character = GameObject.FindGameObjectWithTag("Character");
 		WordObject wordObject = character.GetComponent<WordObject>();
@@ -62,6 +65,7 @@ public class Game : MonoBehaviour
 		this.hudManager.Update();
 		this.cameraManager.Update();
 		this.audioManager.Update();
+		this.backgroundManager.Update();
 	}
 	
 	public void SetGravity( Vector3 newGravity )

@@ -48,7 +48,6 @@ public class CameraManager
 	{
 		// Find the game's camera object
 		this.camera = GameObject.Find("Main Camera");
-		
 		this.camera.transform.position += this.ORIGINAL_CAMEREA_OFFSET;
 		
 		this.destinationCameraPosition = this.camera.transform.position;
