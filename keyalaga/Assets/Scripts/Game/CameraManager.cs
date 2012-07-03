@@ -68,7 +68,7 @@ public class CameraManager
 			Time.deltaTime, 
 			this.cameraSpeed );		
 			*/
-		this.camera.transform.position = this.destinationCameraPosition;
+		//this.camera.transform.position = this.destinationCameraPosition;
 	}
 	
 	public void AddTrackingObject( GameObject newObject )
