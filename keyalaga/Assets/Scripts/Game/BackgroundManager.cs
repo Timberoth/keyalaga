@@ -45,7 +45,7 @@ public class BackgroundManager
 		// Want to increase the offset size a little bigger than the camera view so that we can
 		// spawn in background tiles before the camera sees them.
 		//this.cameraBoundaryOffsets = 1.2f * (upperRight-center);
-		this.cameraBoundaryOffsets = 1.0f * (upperRight-center);
+		this.cameraBoundaryOffsets = 1.2f * (upperRight-center);
 				
 		// Calculate the background tile size, so we can dynamically position the backgrounds
 		this.backgroundTileSize = new Vector2();
@@ -77,30 +77,100 @@ public class BackgroundManager
 		
 		// See if any of the existing tiles contain the corner points.  
 		// If not we need to spawn a new tile and align it properly.
-		bool pointContained = false;
-		foreach( GameObject tile in this.backgroundTiles )
-		{
-			if( DoesTileContainPoint( tile, this.cameraCorners[0] ) )
-			{
-				pointContained = true;
-			}			
-		}
+		bool lowerLeftContained = IsPointOnAnyTile( this.cameraCorners[0] );
+		bool upperLeftContained = IsPointOnAnyTile( this.cameraCorners[1] );
+		bool upperRightContained = IsPointOnAnyTile( this.cameraCorners[2] );
+		bool lowerRightContained = IsPointOnAnyTile( this.cameraCorners[3] );
 		
-		// If no tile contained this corner, then we need to spawn one
-		if( !pointContained )
+		// Left side not contained
+		if( !lowerLeftContained && !upperLeftContained )
 		{
-			int roundedCameraX = Mathf.RoundToInt( this.cameraCorners[0].x );
-			int roundedTileSizeX = Mathf.RoundToInt(this.backgroundTileSize.x);
-			int newTileX = roundedCameraX + ( roundedCameraX % roundedTileSizeX ) - roundedTileSizeX;
+			// Spawn tile to the left
+			Vector2 midPoint = (this.cameraCorners[1]+this.cameraCorners[0])/2f;			
 			
-			int roundedCameraY = Mathf.RoundToInt( this.cameraCorners[0].y );
+			int roundedCameraX = Mathf.RoundToInt( midPoint.x );
+			int roundedTileSizeX = Mathf.RoundToInt(this.backgroundTileSize.x);
+			int newTileX = roundedCameraX + ( roundedCameraX % roundedTileSizeX );
+			
+			int roundedCameraY = Mathf.RoundToInt( midPoint.y );
 			int roundedTileSizeY = Mathf.RoundToInt(this.backgroundTileSize.y);
-			int newTileY = roundedCameraY + ( roundedCameraY % roundedTileSizeY ) - roundedTileSizeY;
+			int newTileY = roundedCameraY - ( roundedCameraY % roundedTileSizeY );
 			
 			// Create new tile at newTile X/Y
 			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(newTileX, newTileY, 0f), Quaternion.identity);
 			this.backgroundTiles.Add( newTile );
-		}
+		}		
+		
+		// Right side not contained
+		if( !lowerRightContained && !upperRightContained )
+		{
+			// Spawn tile to the right
+			Vector2 midPoint = (this.cameraCorners[2]+this.cameraCorners[3])/2f;			
+			
+			int roundedCameraX = Mathf.RoundToInt( midPoint.x );
+			int roundedTileSizeX = Mathf.RoundToInt(this.backgroundTileSize.x);
+			int newTileX = roundedCameraX + ( roundedCameraX % roundedTileSizeX );
+			
+			int roundedCameraY = Mathf.RoundToInt( midPoint.y );
+			int roundedTileSizeY = Mathf.RoundToInt(this.backgroundTileSize.y);
+			int newTileY = roundedCameraY - ( roundedCameraY % roundedTileSizeY );
+			
+			// Create new tile at newTile X/Y
+			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(newTileX, newTileY, 0f), Quaternion.identity);
+			this.backgroundTiles.Add( newTile );
+		}	
+		
+		// Top not contained
+		if( !upperLeftContained && !upperRightContained )
+		{
+			// Spawn tile on top
+			Vector2 midPoint = (this.cameraCorners[1]+this.cameraCorners[2])/2f;
+			
+			int roundedCameraX = Mathf.RoundToInt( midPoint.x );
+			int roundedTileSizeX = Mathf.RoundToInt(this.backgroundTileSize.x);
+			int newTileX = roundedCameraX + ( roundedCameraX % roundedTileSizeX );
+			
+			int roundedCameraY = Mathf.RoundToInt( midPoint.y );
+			int roundedTileSizeY = Mathf.RoundToInt(this.backgroundTileSize.y);
+			int newTileY = roundedCameraY - ( roundedCameraY % roundedTileSizeY ) + roundedTileSizeY;
+			
+			// Create new tile at newTile X/Y
+			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(newTileX, newTileY, 0f), Quaternion.identity);
+			this.backgroundTiles.Add( newTile );
+		}	
+		
+		
+		// Bottom not contained
+		if( !lowerLeftContained && !lowerRightContained )
+		{
+			// Spawn tile on the bottom
+			Vector2 midPoint = (this.cameraCorners[0]+this.cameraCorners[3])/2f;
+			
+			int roundedCameraX = Mathf.RoundToInt( midPoint.x );
+			int roundedTileSizeX = Mathf.RoundToInt(this.backgroundTileSize.x);
+			int newTileX = roundedCameraX + ( roundedCameraX % roundedTileSizeX );
+			
+			int roundedCameraY = Mathf.RoundToInt( midPoint.y );
+			int roundedTileSizeY = Mathf.RoundToInt(this.backgroundTileSize.y);
+			int newTileY = roundedCameraY - ( roundedCameraY % roundedTileSizeY ) - roundedTileSizeY;
+			
+			// Create new tile at newTile X/Y
+			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(newTileX, newTileY, 0f), Quaternion.identity);
+			this.backgroundTiles.Add( newTile );
+		}	
+	}
+	
+	// Helper function to check if this point exists on any background tile
+	private bool IsPointOnAnyTile( Vector2 point )
+	{		
+		foreach( GameObject tile in this.backgroundTiles )
+		{
+			if( DoesTileContainPoint( tile, point ) )
+			{
+				return true;
+			}			
+		}		
+		return false;
 	}
 	
 	private bool DoesTileContainPoint( GameObject tile, Vector2 point )
