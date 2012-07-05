@@ -7,7 +7,7 @@ public class BackgroundManager
 	// Keep a ref to the main camera
 	private Camera gameCamera;
 	
-	// Keep a ref to the background Tile prefab so we can instantiate them
+	// Keep a ref to the background Tile prefab so we can pull information from it.
 	private GameObject backgroundTile;
 	
 	// Keep a list of background tiles in use
@@ -31,8 +31,9 @@ public class BackgroundManager
 	{		
 		this.backgroundTiles = new List<GameObject>();
 		
-		this.backgroundTile = (GameObject)Resources.Load("Prefabs/Background/Sky2");		
-		GameObject startingTile = (GameObject)GameObject.Instantiate( this.backgroundTile );
+		this.backgroundTile = (GameObject)Resources.Load("Prefabs/Background/SkyTile2");		
+		
+		GameObject startingTile = (GameObject)GameObject.Instantiate( Resources.Load("Prefabs/Background/SkyWall2") );
 		this.backgroundTiles.Add( startingTile );
 		
 		GameObject gameCameraObject = GameObject.Find("Main Camera");

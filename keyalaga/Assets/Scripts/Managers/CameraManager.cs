@@ -72,12 +72,7 @@ public class CameraManager
 			Time.deltaTime, 
 			this.cameraSpeed );		
 			*/
-		this.camera.transform.position = this.destinationCameraPosition;
-		
-		// Keep the boundary walls at the same height as the camera
-		Vector3 boundaryWallPosition = this.boundaryWalls.transform.position;
-		boundaryWallPosition.y = this.camera.transform.position.y;
-		this.boundaryWalls.transform.position = boundaryWallPosition;
+		this.camera.transform.position = this.destinationCameraPosition;		
 	}
 	
 	public void AddTrackingObject( GameObject newObject )

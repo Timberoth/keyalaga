@@ -49,7 +49,7 @@ public class WordObject : MonoBehaviour
 			this.maxHeight = roundedHeight;			
 			Game.instance.hudManager.maxHeightLabel.text = "Max Height: "+this.maxHeight.ToString()+"M";
 		}
-		
+				
 		// Check for end game conditions
 		if( roundedHeight <= -1 )
 		{
@@ -72,8 +72,11 @@ public class WordObject : MonoBehaviour
 		*/		
 	}
 	
+	float wrapTimer = 0f;
 	public void FixedUpdate()
 	{		
+		wrapTimer += Time.fixedDeltaTime;
+		
 		this.timer += Time.fixedDeltaTime;
 		
 		// We only want to increase the spin speed after a certain bit of time
@@ -114,6 +117,18 @@ public class WordObject : MonoBehaviour
 			newVelocity.y = Mathf.Max( this.rigidbody.velocity.y, -15f );		
 			this.rigidbody.velocity = newVelocity;			
 		}
+		
+		
+		// Check for horizontal wrap conditions
+		if( wrapTimer > 0.25 && 
+			(this.rigidbody.position.x <= -20f || this.rigidbody.position.x >= 20f) )
+		{
+			Vector3 newPosition = this.rigidbody.position;
+			newPosition.x *= -1;
+			this.rigidbody.position = newPosition;
+			
+			wrapTimer = 0f;
+		}		
 	}
 	
 	// Do something interesting when this object has been matched in game.
