@@ -82,6 +82,7 @@ public class BackgroundManager
 		bool upperRightContained = IsPointOnAnyTile( this.cameraCorners[2] );
 		bool lowerRightContained = IsPointOnAnyTile( this.cameraCorners[3] );
 		
+		/*
 		// Left side not contained
 		if( !lowerLeftContained && !upperLeftContained )
 		{
@@ -118,7 +119,8 @@ public class BackgroundManager
 			// Create new tile at newTile X/Y
 			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(newTileX, newTileY, 0f), Quaternion.identity);
 			this.backgroundTiles.Add( newTile );
-		}	
+		}
+		*/	
 		
 		// Top not contained
 		if( !upperLeftContained && !upperRightContained )
@@ -135,7 +137,7 @@ public class BackgroundManager
 			int newTileY = roundedCameraY - ( roundedCameraY % roundedTileSizeY ) + roundedTileSizeY;
 			
 			// Create new tile at newTile X/Y
-			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(newTileX, newTileY, 0f), Quaternion.identity);
+			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(0f, newTileY, 0f), Quaternion.identity);
 			this.backgroundTiles.Add( newTile );
 		}	
 		
@@ -155,7 +157,7 @@ public class BackgroundManager
 			int newTileY = roundedCameraY - ( roundedCameraY % roundedTileSizeY ) - roundedTileSizeY;
 			
 			// Create new tile at newTile X/Y
-			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(newTileX, newTileY, 0f), Quaternion.identity);
+			GameObject newTile = (GameObject)GameObject.Instantiate(this.backgroundTile, new Vector3(0f, newTileY, 0f), Quaternion.identity);
 			this.backgroundTiles.Add( newTile );
 		}	
 	}
