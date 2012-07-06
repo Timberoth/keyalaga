@@ -12,15 +12,20 @@ public class WordObject : MonoBehaviour
 	private const float ROTATION_SPEED = 20f;
 	
 	private float timer = 0f;
-	private float updateTimer = 0.1f;
-	
-	private bool headingRight = true;
+	private float updateTimer = 0.1f;	
 	private bool jumping = false;
+	
+	// Used to prevent the object from getting caught between wrapping back and 
+	// forth.  Without a slight buffer time the object would bounce back and forth
+	// between sides.
+	private Vector2 wrapTimer = new Vector2(0f,0f);
 	
 	private exSprite sprite;
 	private exSpriteAnimation spriteAnimation;
 	
 	private int maxHeight = 0;
+	
+	private float height = 0;	
 	
 	public void Awake()
 	{		
@@ -37,8 +42,9 @@ public class WordObject : MonoBehaviour
 	// Update is called once per frame
 	public void Update () 
 	{				
-		float height = this.rigidbody.position.y-1f;
-		int roundedHeight = Mathf.RoundToInt(height);
+		// Calculate height
+		this.height += this.rigidbody.velocity.y * Time.deltaTime;
+		int roundedHeight = Mathf.RoundToInt(this.height);
 		
 		// Update height text
 		Game.instance.hudManager.heightLabel.text = roundedHeight + "M";
@@ -50,6 +56,7 @@ public class WordObject : MonoBehaviour
 			Game.instance.hudManager.maxHeightLabel.text = "Max Height: "+this.maxHeight.ToString()+"M";
 		}
 				
+		
 		// Check for end game conditions
 		if( roundedHeight <= -1 )
 		{
@@ -59,23 +66,14 @@ public class WordObject : MonoBehaviour
 			
 			// TEMP HACK - reload screen
 			Application.LoadLevel("Sandbox");
-		}
-		
-		// Cap velocity to ensure the camera can track it
-		/*
-		Vector3 newVelocity = this.rigidbody.velocity;
-		newVelocity.x = Math.Max( newVelocity.x, -MAX_SPEED );
-		newVelocity.x = Math.Min( newVelocity.x, MAX_SPEED );
-		newVelocity.y = Math.Max( newVelocity.y, -MAX_SPEED );
-		newVelocity.y = Math.Min( newVelocity.y, MAX_SPEED );
-		this.rigidbody.velocity = newVelocity;
-		*/		
+		}		
 	}
 	
-	float wrapTimer = 0f;
+
 	public void FixedUpdate()
 	{		
-		wrapTimer += Time.fixedDeltaTime;
+		this.wrapTimer.x += Time.fixedDeltaTime;
+		this.wrapTimer.y += Time.fixedDeltaTime;
 		
 		this.timer += Time.fixedDeltaTime;
 		
@@ -95,7 +93,7 @@ public class WordObject : MonoBehaviour
 				this.jumping = false;
 				this.spriteAnimation.Play("Cat_Roll");
 				
-				if( this.headingRight )
+				if( this.rigidbody.velocity.x > 0f )
 				{
 					this.rigidbody.AddTorque(Vector3.forward * -ROTATION_SPEED);	
 				}
@@ -119,15 +117,25 @@ public class WordObject : MonoBehaviour
 		}
 		
 		
-		// Check for horizontal wrap conditions
-		if( wrapTimer > 0.25 && 
+		// Check for wrap conditions
+		if( this.wrapTimer.x > 0.25 && 
 			(this.rigidbody.position.x <= -20f || this.rigidbody.position.x >= 20f) )
 		{
 			Vector3 newPosition = this.rigidbody.position;
 			newPosition.x *= -1;
 			this.rigidbody.position = newPosition;
 			
-			wrapTimer = 0f;
+			this.wrapTimer.x = 0f;
+		}
+		
+		if( this.wrapTimer.y > 0.25 && 
+			(this.rigidbody.position.y <= -30f || this.rigidbody.position.y >= 30f) )
+		{
+			Vector3 newPosition = this.rigidbody.position;
+			newPosition.y *= -1;
+			this.rigidbody.position = newPosition;
+			
+			this.wrapTimer.y = 0f;
 		}		
 	}
 	
@@ -143,6 +151,8 @@ public class WordObject : MonoBehaviour
 	
 	private void Jump()
 	{
+		bool headingRight = (this.rigidbody.velocity.x > 0f);
+		
 		// Zero out y velocity if we're falling.
 		if( this.rigidbody.velocity.y < 0.0f )
 		{
@@ -155,10 +165,9 @@ public class WordObject : MonoBehaviour
 		Vector3 force = Vector3.up * MAX_IMPLUSE;
 		
 		// Heading Right, want to blast left
-		if( this.headingRight )
+		if( headingRight )
 		{
-			force.x = UnityEngine.Random.Range(-10,-6);
-			this.headingRight = false;
+			force.x = UnityEngine.Random.Range(-10,-6);			
 			
 			// Kill rotation
 			this.rigidbody.angularVelocity = Vector3.zero;
@@ -170,8 +179,7 @@ public class WordObject : MonoBehaviour
 		// Heading Left, want to blast right
 		else
 		{
-			force.x = UnityEngine.Random.Range(6,10);
-			this.headingRight = true;
+			force.x = UnityEngine.Random.Range(6,10);			
 			
 			// Kill rotation
 			this.rigidbody.angularVelocity = Vector3.zero;

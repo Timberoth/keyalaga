@@ -56,6 +56,9 @@ public class Game : MonoBehaviour
 		
 		// CameraManager needs tracking ref
 		this.cameraManager.AddTrackingObject( character );
+		
+		// Disable gravity until the first word is match
+		SetGravity( Vector3.zero );
 	}
 	
 	// Update is called once per frame
@@ -65,7 +68,6 @@ public class Game : MonoBehaviour
 		this.hudManager.Update();
 		this.cameraManager.Update();
 		this.audioManager.Update();
-		this.backgroundManager.Update();
 	}
 	
 	public void SetGravity( Vector3 newGravity )

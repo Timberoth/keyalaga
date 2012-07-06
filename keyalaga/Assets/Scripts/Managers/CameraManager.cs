@@ -19,9 +19,7 @@ public class CameraManager
 	private Vector3 ORIGINAL_CAMEREA_OFFSET = new Vector3(0f, -2f, 0f);
 		
 	//private float cameraSpeed = 10.0f;
-	
-	private GameObject boundaryWalls;
-	
+		
 	// Adapted from Aubrey Hesselgren's function at 
 	// http://answers.unity3d.com/questions/17076/how-to-lerp-between-to-vector3-positions-c.html
 	public static Vector3 InterpolateStepOverTime(Vector3 Current, Vector3 Target, float DeltaTime, float InterpSpeed)
@@ -53,8 +51,6 @@ public class CameraManager
 		this.camera.transform.position += this.ORIGINAL_CAMEREA_OFFSET;
 		
 		this.destinationCameraPosition = this.camera.transform.position;
-		
-		this.boundaryWalls = GameObject.Find("BoundaryWalls");
 	}
 	
 	public void Update() 
