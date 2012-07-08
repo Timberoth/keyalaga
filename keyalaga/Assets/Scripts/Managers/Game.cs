@@ -65,6 +65,7 @@ public class Game : MonoBehaviour
 	private void Update () 
 	{
 		this.inputManager.Update();
+		this.wordManager.Update();
 		this.hudManager.Update();
 		this.cameraManager.Update();
 		this.audioManager.Update();

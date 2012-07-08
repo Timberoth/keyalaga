@@ -7,6 +7,7 @@ public class HUDManager
 	public UILabel maxHeightLabel;
 	public UILabel currentWordLabel;
 	public UILabel userInputLabel;
+	public UILabel comboLabel;
 	
 	// Use this for initialization
 	public void Initialize () 
@@ -22,6 +23,9 @@ public class HUDManager
 		
 		GameObject userInputObject = GameObject.Find("UserInputText");
 		this.userInputLabel = userInputObject.GetComponent<UILabel>();
+		
+		GameObject comboObject = GameObject.Find("ComboText");
+		this.comboLabel = comboObject.GetComponent<UILabel>();
 	}
 	
 	public void Update () 

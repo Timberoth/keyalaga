@@ -25,6 +25,9 @@ public class WordManager
 	// Database of all the words that may appear in the game categorized
 	// by difficulty.	
 	private Dictionary<WordDifficulty,List<string>> wordDatabase;
+	
+	// Number of words or phrases correct in a row
+	private int comboCount = 0;
 
 	// Use this for initialization
 	public void Initialize() 
@@ -34,6 +37,12 @@ public class WordManager
 		
 		// Load the word database
 		LoadWordDatabase();
+	}
+	
+	public void Update()
+	{
+		// Update the combo counter
+		Game.instance.hudManager.comboLabel.text = "Combos: "+this.comboCount.ToString();
 	}
 	
 	private void LoadWordDatabase()
@@ -96,6 +105,7 @@ public class WordManager
 					{
 						if(	wordObject.word == words[i] )		
 						{
+							AddToComboStreak(1);
 							wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
 							return;
 						}
@@ -118,20 +128,26 @@ public class WordManager
 					// There a bunch of cases to check for a match
 					if( inputBuffer.Length == wordObject.word.Length )
 					{
+						AddToComboStreak( words.Length );
 						wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
 						return;
 					}
 					
 					else if( charBeforePhrase == ' ' && charAfterPhrase == ' ' )
 					{
+						AddToComboStreak( words.Length );
 						wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
 						return;
 					}
 				}				
 			}
 		}
+		
+		// If we get to this point a match hasn't been found, so end the streak
+		EndComboStreak();
 	}	
 	
+	// Helper function to determine the difficulty of the wordObject based on it's height
 	private WordDifficulty DetermineDifficulty( WordObject wordObject )
 	{
 		// Check the height to determine the difficulty of the next word
@@ -156,5 +172,27 @@ public class WordManager
 		List<string> words = (List<string>)this.wordDatabase[difficulty];
 		int random = UnityEngine.Random.Range(0, words.Count);
 		return words[random];
+	}
+	
+	public void AddToComboStreak( int value )
+	{
+		this.comboCount += value;
+		
+		// Play animation
+		
+		// Play sound
+		
+		// Play particle
+	}
+	
+	public void EndComboStreak()
+	{
+		this.comboCount = 0;
+		
+		// Play animation
+		
+		// Play sound
+		
+		// Play particles
 	}
 }
