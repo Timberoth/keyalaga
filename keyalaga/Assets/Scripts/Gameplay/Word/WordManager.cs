@@ -135,7 +135,7 @@ public class WordManager
 	private WordDifficulty DetermineDifficulty( WordObject wordObject )
 	{
 		// Check the height to determine the difficulty of the next word
-		float height = wordObject.rigidbody.position.y;
+		float height = wordObject.height;
 		WordDifficulty difficulty = WordDifficulty.Easy;
 		
 		if( height > 800f )

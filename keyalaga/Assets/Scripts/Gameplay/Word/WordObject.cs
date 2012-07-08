@@ -6,6 +6,7 @@ using System;
 public class WordObject : MonoBehaviour
 {	
 	public string word;
+	public float height = 0f;
 	
 	private const float MAX_SPEED = 10f;
 	private const float MAX_IMPLUSE = 20f;
@@ -23,9 +24,7 @@ public class WordObject : MonoBehaviour
 	private exSprite sprite;
 	private exSpriteAnimation spriteAnimation;
 	
-	private int maxHeight = 0;
-	
-	private float height = 0;	
+	private int maxHeight = 0;	
 	
 	public void Awake()
 	{		
