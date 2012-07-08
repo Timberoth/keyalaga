@@ -204,5 +204,8 @@ public class WordObject : MonoBehaviour
 		this.jumping = true;
 		
 		Game.instance.SetGravity( new Vector3(0f, -9.81f, 0f) );
+		
+		// Restore Time to normal if we're in slow mode
+		Game.instance.SlowTime(false);
 	}
 }

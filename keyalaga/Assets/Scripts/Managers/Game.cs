@@ -74,4 +74,20 @@ public class Game : MonoBehaviour
 	{
 		Physics.gravity = newGravity;	
 	}	
+	
+	// Slow down time, calling without args will disable slow time
+	public void SlowTime( bool enable )
+	{		
+		// Default value is 1/60 0.016666		
+		if( enable )
+		{
+			Time.timeScale = 0.5f;
+			Time.fixedDeltaTime = 0.01666f * (1f/(1f-Time.timeScale));
+		}
+		else
+		{
+			Time.timeScale = 1f;
+			Time.fixedDeltaTime = 0.01666f;
+		}		
+	}
 }
