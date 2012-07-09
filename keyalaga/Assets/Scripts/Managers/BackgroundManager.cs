@@ -17,8 +17,8 @@ public class BackgroundManager
 	// Use this for initialization
 	public void Initialize() 
 	{		
-		this.backgroundTile = (GameObject)Resources.Load("Prefabs/Background/SkyTile2");				
-		this.background = (GameObject)GameObject.Instantiate( Resources.Load("Prefabs/Background/SkyWall2") );
+		this.backgroundTile = (GameObject)Resources.Load("Prefabs/Background/SkyTile2");
+		this.background = GameObject.Find("SkyWall2");
 					
 		// Calculate the background tile size, so we can dynamically position the backgrounds
 		this.backgroundTileSize = new Vector2();

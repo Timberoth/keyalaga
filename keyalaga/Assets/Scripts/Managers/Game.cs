@@ -60,15 +60,8 @@ public class Game : MonoBehaviour
 		// Disable gravity until the first word is match
 		SetGravity( Vector3.zero );
 		
-		// ATLAS SWAPPING TEST		
-		GameObject referenceFontObject = (GameObject)Resources.Load("Art/Fonts/ArialFont_Reference");
-		UIFont referenceFont = referenceFontObject.GetComponent<UIFont>();
-		
-		// Swap the fonts based on the screen resolution
-		GameObject sdFontObject = (GameObject)Resources.Load("Art/Fonts/ArialFont-iPadHD");
-		UIFont sdFont = sdFontObject.GetComponent<UIFont>();
-		
-		//referenceFont.replacement = sdFont;
+		// Swap in the proper UI and Font atlases based on the device resolution
+		SetupAtlases();
 	}
 	
 	// Update is called once per frame
@@ -100,5 +93,31 @@ public class Game : MonoBehaviour
 			Time.timeScale = 1f;
 			Time.fixedDeltaTime = 0.01666f;
 		}		
+	}
+	
+	
+	// Swap in the proper UI and Font atlases based on screen resolution
+	private void SetupAtlases()
+	{				
+		GameObject referenceFontObject = (GameObject)Resources.Load("Art/Fonts/ArialFont-Reference");
+		UIFont referenceFont = referenceFontObject.GetComponent<UIFont>();
+				
+		GameObject properFontObject = (GameObject)Resources.Load(GetProperFontPrefab());
+		UIFont properFont = properFontObject.GetComponent<UIFont>();
+		
+		referenceFont.replacement = properFont;
+	}
+	
+	// This is based on landscape orientation
+	// TODO Specially support Android resolutions instead of
+	// assuming they fall into the same basic resolution categories
+	private string GetProperFontPrefab()
+	{		
+		if( Screen.height >= 1536 )
+			return "Art/Fonts/ArialFont-iPadHD";
+		else if( Screen.height >= 768 )
+			return "Art/Fonts/ArialFont-HD";
+		else
+			return "Art/Fonts/ArialFont-SD";
 	}
 }

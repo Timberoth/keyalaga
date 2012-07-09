@@ -78,7 +78,7 @@ public class InputManager
 			this.keyboard.text = "";
 		}
 		
-		Game.instance.hudManager.userInputLabel.text = this.keyboard.text;
+		Game.instance.hudManager.userInputLabel.text = this.keyboard.text.ToLower();
 #endif
 	}
 }
