@@ -59,6 +59,16 @@ public class Game : MonoBehaviour
 		
 		// Disable gravity until the first word is match
 		SetGravity( Vector3.zero );
+		
+		// ATLAS SWAPPING TEST		
+		GameObject referenceFontObject = (GameObject)Resources.Load("Art/Fonts/ArialFont_Reference");
+		UIFont referenceFont = referenceFontObject.GetComponent<UIFont>();
+		
+		// Swap the fonts based on the screen resolution
+		GameObject sdFontObject = (GameObject)Resources.Load("Art/Fonts/ArialFont-iPadHD");
+		UIFont sdFont = sdFontObject.GetComponent<UIFont>();
+		
+		//referenceFont.replacement = sdFont;
 	}
 	
 	// Update is called once per frame
