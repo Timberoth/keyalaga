@@ -11,9 +11,9 @@ public class WordObject : MonoBehaviour
 	public float distanceTraveled = 0f;
 	public int maxDistanceTraveled = 0;
 	
-	public const float MAX_SPEED = 10f;
-	public const float MAX_IMPLUSE = 20f;
-	public const float ROTATION_SPEED = 20f;
+	public float MAX_SPEED = 10f;
+	public float MAX_IMPLUSE = 20f;
+	public float ROTATION_SPEED = 20f;
 	
 	protected float timer = 0f;
 	protected float updateTimer = 0.1f;	
@@ -50,6 +50,31 @@ public class WordObject : MonoBehaviour
 		Game.instance.hudManager.currentWordLabel.text = this.word;
 		
 		Jump();
+	}
+	
+	public virtual void HandleScreenWrapping()
+	{
+		Vector2 tileSize = Game.instance.backgroundManager.backgroundTileSize;
+		// Check for wrap conditions
+		if( this.wrapTimer.x > 0.25 && 
+			(this.rigidbody.position.x <= -tileSize.x || this.rigidbody.position.x >= tileSize.x) )
+		{
+			Vector3 newPosition = this.rigidbody.position;
+			newPosition.x *= -1;
+			this.rigidbody.position = newPosition;
+			
+			this.wrapTimer.x = 0f;
+		}
+		
+		if( this.wrapTimer.y > 0.25 && 
+			(this.rigidbody.position.y <= -tileSize.y || this.rigidbody.position.y >= tileSize.y) )
+		{
+			Vector3 newPosition = this.rigidbody.position;
+			newPosition.y *= -1;
+			this.rigidbody.position = newPosition;
+			
+			this.wrapTimer.y = 0f;
+		}			
 	}
 	
 	public virtual void Jump(){}

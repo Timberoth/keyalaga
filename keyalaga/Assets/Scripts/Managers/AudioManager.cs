@@ -33,12 +33,8 @@ public class AudioManager
 		RegisterSoundEffect("super_jump", "Audio/SoundEffects/super_jump");
 		
 		RegisterMusicTrack("ChronoTrigger", "Audio/Music/ChronoTrigger");
-
-#if UNITY_EDITOR
-		// Don't play music
-#else
+		
 		PlayMusicTrack("ChronoTrigger");
-#endif
 	}
 		
 	public void Update () 
@@ -70,8 +66,11 @@ public class AudioManager
 	{
 		GameUtils.Assert(this.soundEffects.ContainsKey(name),
 			"Trying to play a sound effect that hasn't been registered: "+name);
+#if UNITY_EDITOR
 		
+#else
 		this.soundEffectsSource.PlayOneShot(this.soundEffects[name]);
+#endif
 	}
 	
 	public void PlayMusicTrack( string name, bool loop=false )
@@ -83,9 +82,12 @@ public class AudioManager
 			this.musicTrackSource.loop = true;
 		
 		this.musicTrackSource.clip = this.musicTracks[name];
-		this.musicTrackSource.Play();
 		
-		Debug.Log("Playing Music");
+#if UNITY_EDITOR
+		
+#else
+		this.musicTrackSource.Play();
+#endif
 	}
 	
 	public void StopMusicTrack()

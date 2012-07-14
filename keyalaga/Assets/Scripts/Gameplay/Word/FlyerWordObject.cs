@@ -86,27 +86,7 @@ public class FlyerWordObject : WordObject {
 			this.rigidbody.velocity = newVelocity;			
 		}
 		
-		
-		// Check for wrap conditions
-		if( this.wrapTimer.x > 0.25 && 
-			(this.rigidbody.position.x <= -20f || this.rigidbody.position.x >= 20f) )
-		{
-			Vector3 newPosition = this.rigidbody.position;
-			newPosition.x *= -1;
-			this.rigidbody.position = newPosition;
-			
-			this.wrapTimer.x = 0f;
-		}
-		
-		if( this.wrapTimer.y > 0.25 && 
-			(this.rigidbody.position.y <= -30f || this.rigidbody.position.y >= 30f) )
-		{
-			Vector3 newPosition = this.rigidbody.position;
-			newPosition.y *= -1;
-			this.rigidbody.position = newPosition;
-			
-			this.wrapTimer.y = 0f;
-		}		
+		HandleScreenWrapping();
 	}
 	
 	public override void Jump()
