@@ -3,8 +3,8 @@ using System.Collections;
 
 public class HUDManager 
 {
-	public UILabel heightLabel;
-	public UILabel maxHeightLabel;
+	public UILabel distanceTraveledLabel;
+	public UILabel maxDistanceTraveledLabel;
 	public UILabel currentWordLabel;
 	public UILabel userInputLabel;
 	public UILabel comboLabel;
@@ -12,20 +12,20 @@ public class HUDManager
 	// Use this for initialization
 	public void Initialize () 
 	{
-		GameObject heightObject = GameObject.Find("HeightText");
-		this.heightLabel = heightObject.GetComponent<UILabel>();
+		GameObject gameObj = GameObject.Find("DistanceTraveledText");
+		this.distanceTraveledLabel = gameObj.GetComponent<UILabel>();
 		
-		GameObject maxHeightObject = GameObject.Find("MaxHeightText");
-		this.maxHeightLabel = maxHeightObject.GetComponent<UILabel>();
+		gameObj = GameObject.Find("MaxDistanceTraveledText");
+		this.maxDistanceTraveledLabel = gameObj.GetComponent<UILabel>();
 		
-		GameObject activeWordObject = GameObject.Find("CurrentWordText");
-		this.currentWordLabel = activeWordObject.GetComponent<UILabel>();
+		gameObj = GameObject.Find("CurrentWordText");
+		this.currentWordLabel = gameObj.GetComponent<UILabel>();
 		
-		GameObject userInputObject = GameObject.Find("UserInputText");
-		this.userInputLabel = userInputObject.GetComponent<UILabel>();
+		gameObj = GameObject.Find("UserInputText");
+		this.userInputLabel = gameObj.GetComponent<UILabel>();
 		
-		GameObject comboObject = GameObject.Find("ComboText");
-		this.comboLabel = comboObject.GetComponent<UILabel>();
+		gameObj = GameObject.Find("ComboText");
+		this.comboLabel = gameObj.GetComponent<UILabel>();
 	}
 	
 	public void Update () 

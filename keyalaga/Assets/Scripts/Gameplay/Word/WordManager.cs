@@ -106,7 +106,7 @@ public class WordManager
 						if(	wordObject.word == words[i] )		
 						{
 							AddToComboStreak(1);
-							wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
+							wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty()));
 							return;
 						}
 					}			
@@ -129,14 +129,14 @@ public class WordManager
 					if( inputBuffer.Length == wordObject.word.Length )
 					{
 						AddToComboStreak( words.Length );
-						wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
+						wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty()));
 						return;
 					}
 					
 					else if( charBeforePhrase == ' ' && charAfterPhrase == ' ' )
 					{
 						AddToComboStreak( words.Length );
-						wordObject.ReactToMatch(PickRandomWord(DetermineDifficulty( wordObject )));
+						wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty() ));
 						return;
 					}
 				}				
@@ -146,26 +146,7 @@ public class WordManager
 		// If we get to this point a match hasn't been found, so end the streak
 		EndComboStreak();
 	}	
-	
-	// Helper function to determine the difficulty of the wordObject based on it's height
-	private WordDifficulty DetermineDifficulty( WordObject wordObject )
-	{
-		// Check the height to determine the difficulty of the next word
-		float height = wordObject.height;
-		WordDifficulty difficulty = WordDifficulty.Easy;
 		
-		if( height > 800f )
-			difficulty = WordDifficulty.SuperHard;
-		else if( height > 500f )
-			difficulty = WordDifficulty.VeryHard;
-		else if( height > 200f )
-			difficulty = WordDifficulty.Hard;
-		else if( height > 100f )
-			difficulty = WordDifficulty.Medium;
-		
-		return difficulty;		
-	}
-	
 	public string PickRandomWord( WordDifficulty difficulty )
 	{
 		// TODO Keep track of which words are already used to prevent duplicates
