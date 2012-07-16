@@ -24,7 +24,7 @@ public class FlyerWordObject : WordObject {
 		if( distanceTraveled > this.maxDistanceTraveled )
 		{
 			this.maxDistanceTraveled = roundeddistanceTraveled;			
-			Game.instance.hudManager.maxDistanceTraveledLabel.text = "Max distanceTraveled: "+this.maxDistanceTraveled.ToString()+"M";
+			Game.instance.hudManager.maxDistanceTraveledLabel.text = "Max Height: "+this.maxDistanceTraveled.ToString()+"M";
 		}
 				
 		

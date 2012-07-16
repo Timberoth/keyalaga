@@ -27,7 +27,7 @@ public class RunnerWordObject : WordObject {
 		if( distanceTraveled > this.maxDistanceTraveled )
 		{
 			this.maxDistanceTraveled = roundeddistanceTraveled;			
-			Game.instance.hudManager.maxDistanceTraveledLabel.text = "Max distanceTraveled: "+this.maxDistanceTraveled.ToString()+"M";
+			Game.instance.hudManager.maxDistanceTraveledLabel.text = "Max Distance: "+this.maxDistanceTraveled.ToString()+"M";
 		}
 				
 		/*
@@ -143,7 +143,7 @@ public class RunnerWordObject : WordObject {
 		
 		// Restore Time to normal if we're in slow mode
 		Game.instance.SlowTime(false);	
-	}
+	}	
 	
 	public override WordManager.WordDifficulty GetDifficulty()
 	{ 		
