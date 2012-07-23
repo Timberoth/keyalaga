@@ -10,7 +10,7 @@ public class Game : MonoBehaviour
 	public AudioManager audioManager;
 	public BackgroundManager backgroundManager;
 	
-	public int lives = 3;
+	public string databaseFile = "WordDatabase.json";
 	
 	// Singleton Code
 	public static Game instance;
@@ -35,7 +35,7 @@ public class Game : MonoBehaviour
 		this.hudManager.Initialize();
 		
 		this.wordManager = new WordManager();
-		this.wordManager.Initialize();
+		this.wordManager.Initialize( databaseFile );
 		
 		this.cameraManager = new CameraManager();
 		this.cameraManager.Initialize();
@@ -85,8 +85,9 @@ public class Game : MonoBehaviour
 		// Default value is 1/60 0.016666		
 		if( enable )
 		{
+			Debug.Log("Slowing Time");
 			Time.timeScale = 0.5f;
-			Time.fixedDeltaTime = 0.01666f * (1f/(1f-Time.timeScale));
+			Time.fixedDeltaTime = 0.01666f * (1f/(1f-Time.timeScale));			
 		}
 		else
 		{
@@ -95,6 +96,12 @@ public class Game : MonoBehaviour
 		}		
 	}
 	
+	public void StopTime()
+	{
+		Debug.Log("Stopping Time");
+		Time.timeScale = 0f;
+		Time.fixedDeltaTime = 0f;
+	}	
 	
 	// Swap in the proper UI and Font atlases based on screen resolution
 	private void SetupAtlases()

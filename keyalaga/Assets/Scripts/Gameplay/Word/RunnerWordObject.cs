@@ -116,7 +116,7 @@ public class RunnerWordObject : WordObject {
 		}			
 	}
 	
-	public override void Jump()
+	public override void Jump( int wordLength )
 	{			
 		// Counter act gravity to create the jump effect
 		this.rigidbody.velocity = new Vector3(this.rigidbody.velocity.x, 9.8f, 0f);

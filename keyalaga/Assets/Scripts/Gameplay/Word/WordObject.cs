@@ -45,11 +45,11 @@ public class WordObject : MonoBehaviour
 	// Do something interesting when this object has been matched in game.
 	public virtual void ReactToMatch( string newWord )
 	{				
-		this.word = newWord;
+		// Use length of matched word to determine how much to jump		
+		Jump( this.word.Length );
 		
-		Game.instance.hudManager.currentWordLabel.text = this.word;
-		
-		Jump();
+		this.word = newWord;		
+		Game.instance.hudManager.currentWordLabel.text = this.word;		
 	}
 	
 	public virtual void HandleScreenWrapping()
@@ -77,7 +77,7 @@ public class WordObject : MonoBehaviour
 		}			
 	}
 	
-	public virtual void Jump(){}
+	public virtual void Jump( int wordLength ){}
 	
 	// Determine the difficulty of the word based the game type.
 	// For FlyerWordObjects difficulty is based on how high it is,

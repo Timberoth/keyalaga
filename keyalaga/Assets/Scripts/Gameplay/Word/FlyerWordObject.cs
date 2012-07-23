@@ -73,7 +73,11 @@ public class FlyerWordObject : WordObject {
 				}
 				
 				// Slow gravity depending on the difficulty
-				Game.instance.SetGravity( new Vector3(0f, -4.9f, 0f) );			
+				float gravity = -4.9f;
+				if( this.GetDifficulty() == WordManager.WordDifficulty.VeryHard ||
+					this.GetDifficulty() == WordManager.WordDifficulty.SuperHard )
+					gravity = -3.0f;
+				Game.instance.SetGravity( new Vector3(0f, gravity, 0f) );			
 			}
 		}
 		
@@ -89,7 +93,7 @@ public class FlyerWordObject : WordObject {
 		HandleScreenWrapping();
 	}
 	
-	public override void Jump()
+	public override void Jump( int wordLength )
 	{
 		bool headingRight = (this.rigidbody.velocity.x > 0f);
 		
@@ -101,8 +105,12 @@ public class FlyerWordObject : WordObject {
 		
 		// Zero out the x velocity so the impluse doesn't cancel itself out
 		this.rigidbody.velocity = new Vector3(0f, this.rigidbody.velocity.y, 0f);
-				
+	
 		Vector3 force = Vector3.up * MAX_IMPLUSE;
+		
+		if( this.GetDifficulty() == WordManager.WordDifficulty.VeryHard ||
+			this.GetDifficulty() == WordManager.WordDifficulty.SuperHard )
+			force *= 1.15f;
 		
 		// Heading Right, want to blast left
 		if( headingRight )

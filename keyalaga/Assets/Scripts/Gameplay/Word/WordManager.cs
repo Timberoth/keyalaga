@@ -30,13 +30,13 @@ public class WordManager
 	private int comboCount = 0;
 
 	// Use this for initialization
-	public void Initialize() 
+	public void Initialize( string databaseFile ) 
 	{		
 		this.wordObjects = new List<WordObject>();
 		this.wordDatabase = new Dictionary<WordDifficulty, List<string>>();
 		
 		// Load the word database
-		LoadWordDatabase();
+		LoadWordDatabase( databaseFile );
 	}
 	
 	public void Update()
@@ -45,13 +45,12 @@ public class WordManager
 		Game.instance.hudManager.comboLabel.text = "Combos: "+this.comboCount.ToString();
 	}
 	
-	private void LoadWordDatabase()
+	private void LoadWordDatabase( string databaseFile )
 	{
-		string fileContent = File.ReadAllText(GameUtils.GetStreamingAssetsPath()+"/WordDatabase.json");				
+		string fileContent = File.ReadAllText(GameUtils.GetStreamingAssetsPath()+"/"+databaseFile);				
 		Dictionary<string, object> wordDictionary = (Dictionary<string,object>)Json.Deserialize( fileContent );
 			
 		// Load word sets
-		// TODO Support word sets - Make this a separate class altogether
 		LoadSet( "default", wordDictionary );
 	}
 	
@@ -87,7 +86,7 @@ public class WordManager
 	{		
 		// Not factoring in case sensitivity for now
 		inputBuffer = inputBuffer.ToLower();		
-				
+						
 		// Go through entire wordObjects list and check for matches
 		string[] words = inputBuffer.Split(' ');
 		foreach( WordObject wordObject in wordObjects )
@@ -98,54 +97,72 @@ public class WordManager
 				// 2nd pass check for exact match
 				
 				// We're looking for a single word match
-				if( !wordObject.word.Contains(" ") )
+				if( CheckForWordMatch( words, wordObject.word ) )
 				{
-					// Double check that the word is an exact match				
-					for( int i = 0; i < words.Length; i++ )
-					{
-						if(	wordObject.word == words[i] )		
-						{
-							AddToComboStreak(1);
-							wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty()));
-							return;
-						}
-					}			
+					AddToComboStreak(1);
+					wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty()));
+					return;					
 				}
 				
 				// We're looking for a phrase match
-				else
-				{					
-					// Double check that the phrase is an exact match
-					int startIndex = inputBuffer.IndexOf( wordObject.word );					
-					int endIndex = startIndex + wordObject.word.Length - 1;					
-					char charBeforePhrase = ' ';
-					char charAfterPhrase = ' ';
-					if( startIndex > 0 )
-						charBeforePhrase = inputBuffer[startIndex-1];
-					if( endIndex < inputBuffer.Length - 1 )
-						charAfterPhrase = inputBuffer[endIndex+1];
-				
-					// There a bunch of cases to check for a match
-					if( inputBuffer.Length == wordObject.word.Length )
-					{
-						AddToComboStreak( words.Length );
-						wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty()));
-						return;
-					}
-					
-					else if( charBeforePhrase == ' ' && charAfterPhrase == ' ' )
-					{
-						AddToComboStreak( words.Length );
-						wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty() ));
-						return;
-					}
-				}				
+				else if( CheckForPhraseMatch( inputBuffer, wordObject.word ) )
+				{										
+					AddToComboStreak( words.Length );
+					wordObject.ReactToMatch(PickRandomWord(wordObject.GetDifficulty()));
+					return;					
+				}											
+			}
+			else
+			{
+				// Look for power up words
+				if( inputBuffer.Contains("slow time") )
+				{	
+					if( CheckForPhraseMatch( inputBuffer, "slow time" ) )
+						Game.instance.SlowTime( true );					
+				}	
+				else if( inputBuffer.Contains("stop time" ) )
+				{		
+					if(CheckForPhraseMatch( inputBuffer, "stop time" ))
+						Game.instance.StopTime();					
+				}
 			}
 		}
 		
 		// If we get to this point a match hasn't been found, so end the streak
 		EndComboStreak();
 	}	
+	
+	private bool CheckForWordMatch( string[] words, string word )
+	{
+		// Double check that the word is an exact match
+		for( int i = 0; i < words.Length; i++ )
+		{
+			if(	word == words[i] )
+				return true;						
+		}
+		return false;
+	}
+	
+	private bool CheckForPhraseMatch( string inputBuffer, string phrase )
+	{
+		// Double check that the phrase is an exact match
+		int startIndex = inputBuffer.IndexOf( phrase );					
+		int endIndex = startIndex + phrase.Length - 1;					
+		char charBeforePhrase = ' ';
+		char charAfterPhrase = ' ';
+		if( startIndex > 0 )
+			charBeforePhrase = inputBuffer[startIndex-1];
+		if( endIndex < inputBuffer.Length - 1 )
+			charAfterPhrase = inputBuffer[endIndex+1];
+	
+		// There a bunch of cases to check for a match
+		if( inputBuffer.Length == phrase.Length )				
+			return true;
+		else if( charBeforePhrase == ' ' && charAfterPhrase == ' ' )
+			return true;
+		
+		return false;
+	}
 		
 	public string PickRandomWord( WordDifficulty difficulty )
 	{
