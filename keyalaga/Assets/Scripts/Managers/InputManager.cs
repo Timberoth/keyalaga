@@ -5,7 +5,9 @@ public class InputManager
 {
 	string inputBuffer;
 	
+#if UNITY_IPHONE || UNITY_ANDROID
 	TouchScreenKeyboard keyboard;
+#endif
 	
 	// Use this for initialization
 	public void Initialize () 
